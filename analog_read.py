@@ -1,3 +1,4 @@
+# this file will read analog values of the Zig 
 from flask import current_app as app
 
 class AnalogRead:

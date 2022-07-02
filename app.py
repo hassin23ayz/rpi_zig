@@ -3,6 +3,7 @@ import logging
 from flask import Flask
 from logging.handlers import RotatingFileHandler
 from .analog_read import AnalogRead
+from .digital_read import DigitalRead
 
 def create_app(config_file="config/local_config.py"):
     app = Flask(__name__)  # Initialize app
@@ -26,7 +27,12 @@ def create_app(config_file="config/local_config.py"):
         app.logger.info("Running first route")
         # return "Hello, World!"
         sens = AnalogRead()
-        ret = sens.get_vcc()
+        vcc = sens.get_vcc()
+
+        dg = DigitalRead()
+        dr = dg.get_button_state()
+
+        ret = str(vcc) + " " + str(dr)
         return str(ret)
 
     app.logger.info("----- FINISHED STARTING APP -----")
