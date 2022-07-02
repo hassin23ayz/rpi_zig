@@ -2,7 +2,7 @@ import logging
 
 from flask import Flask
 from logging.handlers import RotatingFileHandler
-from .sensors import Sensors
+from .analog_read import AnalogRead
 
 def create_app(config_file="config/local_config.py"):
     app = Flask(__name__)  # Initialize app
@@ -25,9 +25,9 @@ def create_app(config_file="config/local_config.py"):
     def hello_world():
         app.logger.info("Running first route")
         # return "Hello, World!"
-        sens = Sensors()
-        ret = sens.get_dummy_data()
-        return ret
+        sens = AnalogRead()
+        ret = sens.get_vcc()
+        return str(ret)
 
     app.logger.info("----- FINISHED STARTING APP -----")
 
