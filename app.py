@@ -1,9 +1,11 @@
+# app module has the flask app pattern
+# app module energies main module by flasK blueprint pattern
+#     so that the main module can have route functionality 
 import logging
 
 from flask import Flask
 from logging.handlers import RotatingFileHandler
-from .analog_read import AnalogRead
-from .digital_read import DigitalRead
+from .main import main_blueprint
 
 def create_app(config_file="config/local_config.py"):
     app = Flask(__name__)  # Initialize app
@@ -21,19 +23,20 @@ def create_app(config_file="config/local_config.py"):
     app.logger.addHandler(log_file_handler)
     app.logger.setLevel(app.config.get("LOGGER_LEVEL", "ERROR"))
     app.logger.info("----- STARTING APP ------")
+    app.register_blueprint(main_blueprint)
 
-    @app.route("/")
-    def hello_world():
-        app.logger.info("Running first route")
-        # return "Hello, World!"
-        sens = AnalogRead()
-        vcc = sens.get_vcc()
+    # @app.route("/")
+    # def hello_world():
+    #     app.logger.info("Running first route")
+    #     # return "Hello, World!"
+    #     sens = AnalogRead()
+    #     vcc = sens.get_vcc()
 
-        dg = DigitalRead()
-        dr = dg.get_button_state()
+    #     dg = DigitalRead()
+    #     dr = dg.get_button_state()
 
-        ret = str(vcc) + " " + str(dr)
-        return str(ret)
+    #     ret = str(vcc) + " " + str(dr)
+    #     return str(ret)
 
     app.logger.info("----- FINISHED STARTING APP -----")
 
